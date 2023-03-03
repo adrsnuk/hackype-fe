@@ -6,6 +6,7 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   title = 'hackype';
   
   pressedKey = '';
@@ -20,5 +21,12 @@ export class AppComponent {
     this.currentPosition = (event.key == this.charsToType.at(this.currentPosition)) ? this.currentPosition+ 1 : 0;
 
     console.warn(this.pressedKey);
+  }
+
+  public colorTypedTest(i: number){
+    const basic = "mt-6 text-center text-3xl font-bold tracking-tight ";
+    const untyped = basic + "text-gray-900 ";
+    const typed = basic + "text-yellow-400 bg-green-300";
+    return this.currentPosition > i ? typed : untyped;
   }
 }

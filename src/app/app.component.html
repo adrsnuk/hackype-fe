@@ -1,11 +1,14 @@
 
   <div class="w-full max-w-md space-y-8">
     <div>
-      <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">{{textToType}}</h2>
-      <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">{{currentPosition}}</h2>
-      <!-- <h2 *ngFor="let char of charsToType."> -->
+      <!-- <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">{{textToType}}</h2>
+      <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">{{currentPosition}}</h2> -->
 
-      <!-- </h2> -->
+      <h2>
+      <ng-container *ngFor="let char of charsToType; let i = index">
+        <span [ngClass]="colorTypedTest(i)">{{char}}</span>
+      </ng-container>
+    </h2>
   </div>
 </div>
 
