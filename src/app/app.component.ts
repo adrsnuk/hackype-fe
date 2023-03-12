@@ -1,7 +1,6 @@
 import { Component, HostListener, Injectable, Input } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { TextToTypeService } from './text_to_type/text_to_type_service';
+import { HttpService } from './http/http-service';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +12,21 @@ export class AppComponent {
   title = 'hackype';
 
   pressedKey = '';
-  textToType: string = 'Sign in to your account';
+  textToType: string = '';
   charsToType: string[] = this.textToType.split('');
   currentPosition = 0;
   sentances: string[] = [];
   currentSentance: number = 0;
 
-  // fetchTextToTypeService: FetchTextToTypeService;
+  constructor(private httpService: HttpService) {
+    httpService.currentSentenceSubject.subscribe(currentSentence => this.currentSentance = currentSentence);
+    httpService.textToTypeSubject.subscribe(text => this.prepareTextToType(text));
+  }
+
+  public prepareTextToType(text: string): void {
+    this.sentances = text.split(". ");
+    this.charsToType = this.sentances.at(this.currentSentance)?.concat(".").split('')!;
+  }
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -30,7 +37,7 @@ export class AppComponent {
     // console.warn(this.pressedKey);
   }
 
-  private evaluateKeyPressed(event: KeyboardEvent): number {
+  evaluateKeyPressed(event: KeyboardEvent): number {
     const toType = this.charsToType.at(this.currentPosition);
 
     if (event.key === 'Enter') {
@@ -42,26 +49,26 @@ export class AppComponent {
       }
     }
 
+    if(event.key === '.'){
+      if(this.endOfSentence(toType)){
+        console.warn('should save sentance'); 
+        console.warn('shoul get new sentence');
+        this.currentPosition = 0;
+      }
+    }
+
     return (event.key == this.charsToType.at(this.currentPosition)) ? this.currentPosition + 1 : 0;
   }
 
-  public colorTypedTest(i: number) {
+  endOfSentence(toType: string | undefined) {
+    return (toType === '.') && (this.charsToType.length === this.currentPosition + 1);
+  }
+
+  colorTypedTest(i: number) {
     const basic = "mt-6 text-center text-3xl font-bold tracking-tight ";
     const untyped = basic + "text-gray-900 ";
     const typed = basic + "text-yellow-400 bg-green-300";
     return this.currentPosition > i ? typed : untyped;
-  }
-
-  constructor(private textToTypeService: TextToTypeService, private http: HttpClient) {
-    textToTypeService.textToTypeSubject.subscribe(text => this.toTextToType(text));
-  }
-
-  public toTextToType(text: string): void {
-    this.sentances = text.split(". ");
-    this.currentSentance = 0;
-    console.warn(this.sentances.length);
-    this.charsToType = this.sentances.at(0)?.split('')!;
-
   }
 
   isNewLine(char: string): any {
