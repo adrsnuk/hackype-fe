@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -14,7 +14,7 @@ export class HttpService {
     this.fetchTextFromFile();
   }
 
-  private fetchTextFromFile() {
+  fetchTextFromFile() {
     this.http.get(this.textToTypeLocation, { responseType: 'text' })
       .subscribe(data => {
 
@@ -25,7 +25,15 @@ export class HttpService {
           this.textToTypeSubject.complete;
         });
       });
+  }
 
- 
+  completeSentence(id: number, sentence: string) {
+    console.warn(`Saving sentence #${id}: ${sentence}`); 
+    const params = new HttpParams();
+    params.set('id', id)
+    .set('sentence', sentence);
+    this.http.post('http://localhost:8080/complete-sentence', {params}).subscribe({
+      
+    })
   }
 }

@@ -51,13 +51,30 @@ export class AppComponent {
 
     if(event.key === '.'){
       if(this.endOfSentence(toType)){
-        console.warn('should save sentance'); 
-        console.warn('shoul get new sentence');
+        this.completeSentence();
+        this.goToNextSencente();
         this.currentPosition = 0;
       }
     }
 
     return (event.key == this.charsToType.at(this.currentPosition)) ? this.currentPosition + 1 : 0;
+  }
+
+  completeSentence(){
+    const id = this.currentSentance; 
+    const sentence = this.sentances.at(id)!;
+    this.httpService.completeSentence(id, sentence);
+  }
+
+  goToNextSencente(){
+    console.warn("Next sentence");
+    this.currentSentance = this.currentSentance + 1;
+
+    if(this.sentances.length === this.currentSentance){
+      this.sentances.push("Congratulation the intro is complete!")
+    }
+
+    this.charsToType = this.sentances.at(this.currentSentance)?.split('')!;
   }
 
   endOfSentence(toType: string | undefined) {
