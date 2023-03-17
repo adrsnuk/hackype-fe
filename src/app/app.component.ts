@@ -74,7 +74,7 @@ export class AppComponent {
       this.sentences.push("Congratulations the intro is complete!")
     }
 
-    this.charsToType = this.sentences.at(this.currentSentence)?.split('')!;
+    this.charsToType = this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 
   endOfSentence(toType: string | undefined) {
