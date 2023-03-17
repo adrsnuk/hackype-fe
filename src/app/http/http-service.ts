@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Intro } from '../domain/Intro';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +29,9 @@ export class HttpService {
   }
 
   completeSentence(id: number, sentence: string) {
-    console.warn(`Saving sentence #${id}: ${sentence}`); 
-    const params = new HttpParams();
-    params.set('id', id)
-    .set('sentence', sentence);
-    this.http.post('http://localhost:8080/complete-sentence', {params}).subscribe({
-      
-    })
+    let intro = new Intro(id, sentence);
+    console.warn(intro); 
+
+    this.http.post('http://localhost:8080/complete-sentence',intro).subscribe();
   }
 }

@@ -15,17 +15,17 @@ export class AppComponent {
   textToType: string = '';
   charsToType: string[] = this.textToType.split('');
   currentPosition = 0;
-  sentances: string[] = [];
-  currentSentance: number = 0;
+  sentences: string[] = [];
+  currentSentence: number = 0;
 
   constructor(private httpService: HttpService) {
-    httpService.currentSentenceSubject.subscribe(currentSentence => this.currentSentance = currentSentence);
+    httpService.currentSentenceSubject.subscribe(currentSentence => this.currentSentence = currentSentence);
     httpService.textToTypeSubject.subscribe(text => this.prepareTextToType(text));
   }
 
   public prepareTextToType(text: string): void {
-    this.sentances = text.split(". ");
-    this.charsToType = this.sentances.at(this.currentSentance)?.concat(".").split('')!;
+    this.sentences = text.split(". ");
+    this.charsToType = this.sentences.at(this.currentSentence)?.concat(".").split('')!;
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -61,20 +61,20 @@ export class AppComponent {
   }
 
   completeSentence(){
-    const id = this.currentSentance; 
-    const sentence = this.sentances.at(id)!;
+    const id = this.currentSentence; 
+    const sentence = this.sentences.at(id)!;
     this.httpService.completeSentence(id, sentence);
   }
 
   goToNextSencente(){
     console.warn("Next sentence");
-    this.currentSentance = this.currentSentance + 1;
+    this.currentSentence = this.currentSentence + 1;
 
-    if(this.sentances.length === this.currentSentance){
-      this.sentances.push("Congratulation the intro is complete!")
+    if(this.sentences.length === this.currentSentence){
+      this.sentences.push("Congratulations the intro is complete!")
     }
 
-    this.charsToType = this.sentances.at(this.currentSentance)?.split('')!;
+    this.charsToType = this.sentences.at(this.currentSentence)?.split('')!;
   }
 
   endOfSentence(toType: string | undefined) {
