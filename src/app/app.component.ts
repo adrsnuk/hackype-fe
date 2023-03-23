@@ -5,27 +5,29 @@ import { HttpService } from './http/http-service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-
   title = 'hackype';
 
   pressedKey = '';
-  textToType: string = '';
-  charsToType: string[] = this.textToType.split('');
+  charsToType: string[] = [];
   currentPosition = 0;
   sentences: string[] = [];
   currentSentence: number = 0;
 
   constructor(private httpService: HttpService) {
-    httpService.currentSentenceSubject.subscribe(currentSentence => this.currentSentence = currentSentence);
-    httpService.textToTypeSubject.subscribe(text => this.prepareTextToType(text));
+    httpService.currentSentenceSubject.subscribe(
+      (currentSentence) => (this.currentSentence = currentSentence)
+    );
+    httpService.textToTypeSubject.subscribe((text) =>
+      this.prepareTextToType(text)
+    );
   }
 
   public prepareTextToType(text: string): void {
-    this.sentences = text.split(". ");
-    this.charsToType = this.sentences.at(this.currentSentence)?.concat(".").split('')!;
+    this.sentences = text.split('. ');
+    this.charsToType = this.getCharsToType();
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -43,48 +45,55 @@ export class AppComponent {
     if (event.key === 'Enter') {
       if (toType === '\n') {
         return this.currentPosition + 1;
-      }
-      else {
+      } else {
         return 0;
       }
     }
 
-    if(event.key === '.'){
-      if(this.endOfSentence(toType)){
+    if (event.key === '.') {
+      if (this.endOfSentence(toType)) {
         this.completeSentence();
         this.goToNextSencente();
         this.currentPosition = 0;
       }
     }
 
-    return (event.key == this.charsToType.at(this.currentPosition)) ? this.currentPosition + 1 : 0;
+    return event.key == this.charsToType.at(this.currentPosition)
+      ? this.currentPosition + 1
+      : 0;
   }
 
-  completeSentence(){
-    const id = this.currentSentence; 
+  completeSentence() {
+    const id = this.currentSentence;
     const sentence = this.sentences.at(id)!;
     this.httpService.completeSentence(id, sentence);
   }
 
-  goToNextSencente(){
-    console.warn("Next sentence");
+  goToNextSencente() {
+    console.warn('Next sentence');
     this.currentSentence = this.currentSentence + 1;
 
-    if(this.sentences.length === this.currentSentence){
-      this.sentences.push("Congratulations the intro is complete!")
+    if (this.sentences.length === this.currentSentence) {
+      this.sentences.push('Congratulations the intro is complete!');
     }
 
-    this.charsToType = this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
+    this.charsToType = this.getCharsToType();
+  }
+
+  getCharsToType(): string[] {
+    return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 
   endOfSentence(toType: string | undefined) {
-    return (toType === '.') && (this.charsToType.length === this.currentPosition + 1);
+    return (
+      toType === '.' && this.charsToType.length === this.currentPosition + 1
+    );
   }
 
   colorTypedTest(i: number) {
-    const basic = "mt-6 text-center text-3xl font-bold tracking-tight ";
-    const untyped = basic + "text-gray-900 ";
-    const typed = basic + "text-yellow-400 bg-green-300";
+    const basic = 'mt-6 text-center text-3xl font-bold tracking-tight ';
+    const untyped = basic + 'text-gray-900 ';
+    const typed = basic + 'text-yellow-400 bg-green-300';
     return this.currentPosition > i ? typed : untyped;
   }
 
