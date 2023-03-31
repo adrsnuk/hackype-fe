@@ -1,8 +1,10 @@
 <div class="w-full">
   <div>
     <h2>
-      <ng-container *ngFor="let char of charsToType; let i = index">
-        <div *ngIf="isNewLine(char)"></div>
+      <ng-container
+        *ngFor="let char of this.sentenceService.charsToType; let i = index"
+      >
+        <div *ngIf="this.sentenceService.isNewLine(char)"></div>
         <span [ngClass]="colorTypedTest(i)">{{ char }}</span>
       </ng-container>
     </h2>
