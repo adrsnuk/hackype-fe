@@ -33,18 +33,21 @@ export class AppComponent {
       } else {
         return 0;
       }
+
+      // this.sentenceService.handleNewLine(toType);
     }
 
     if (event.key === '.') {
-      if (this.sentenceService.endOfSentence(toType)) {
-        this.sentenceService.completeSentence();
-        this.sentenceService.goToNextSencente();
-        this.sentenceService.currentPosition = 0;
-      }
+      // if (this.sentenceService.endOfSentence(toType)) {
+      //   this.sentenceService.postCompletedSentence();
+      //   this.sentenceService.goToNextSencente();
+      //   this.sentenceService.currentPosition = 0;
+      // }
+
+      this.sentenceService.handleEndOfSentence(toType);
     }
 
-    return event.key ==
-      this.sentenceService.charsToType.at(this.sentenceService.currentPosition)
+    return event.key == this.sentenceService.charToType()
       ? this.sentenceService.currentPosition + 1
       : 0;
   }

@@ -21,17 +21,19 @@ export class SententService {
 
   prepareTextToType(text: string): void {
     this.sentences = text.split('. ');
-    this.charsToType = this.getCharsToType();
+    this.charsToType = this.splitSentenceToType();
   }
 
-  getCharsToType(): string[] {
+  splitSentenceToType(): string[] {
     return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 
-  endOfSentence(toType: string | undefined) {
-    return (
-      toType === '.' && this.charsToType.length === this.currentPosition + 1
-    );
+  handleNewLine(toType: string) {
+    if (this.isNewLine(toType)) {
+      return this.currentPosition + 1;
+    } else {
+      return 0;
+    }
   }
 
   isNewLine(char: string): any {
@@ -39,16 +41,30 @@ export class SententService {
   }
 
   charToType() {
-    return this.charsToType.at(this.currentPosition);
+    return this.charsToType.at(this.currentPosition)!;
   }
 
-  completeSentence() {
+  handleEndOfSentence(toType: string | undefined) {
+    if (this.endOfSentence(toType)) {
+      this.postCompletedSentence();
+      this.goToNextSencente();
+      this.currentPosition = 0;
+    }
+  }
+
+  private endOfSentence(toType: string | undefined) {
+    return (
+      toType === '.' && this.charsToType.length === this.currentPosition + 1
+    );
+  }
+
+  private postCompletedSentence() {
     const id = this.currentSentence;
     const sentence = this.sentences.at(id)!;
     this.httpService.completeSentence(id, sentence);
   }
 
-  goToNextSencente() {
+  private goToNextSencente() {
     console.warn('Next sentence');
     this.currentSentence = this.currentSentence + 1;
 
@@ -56,6 +72,6 @@ export class SententService {
       this.sentences.push('Congratulations the intro is complete!');
     }
 
-    this.charsToType = this.getCharsToType();
+    this.charsToType = this.splitSentenceToType();
   }
 }
