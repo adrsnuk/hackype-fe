@@ -21,6 +21,8 @@ export class SententService {
 
   prepareTextToType(text: string): void {
     this.sentences = text.split('. ');
+    // this.currentSentence = 0; // Test mode!
+    // this.sentences = ['1\n1', '2', '3', '4'];
     this.charsToType = this.splitSentenceToType();
   }
 
@@ -28,15 +30,15 @@ export class SententService {
     return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 
-  handleNewLine(toType: string) {
-    if (this.isNewLine(toType)) {
+  handleNewLine(toType: string): number {
+    if (toType === '\n') {
       return this.currentPosition + 1;
     } else {
       return 0;
     }
   }
 
-  isNewLine(char: string): any {
+  isNewLine(char: string): boolean {
     return char === '\n';
   }
 

@@ -28,28 +28,18 @@ export class AppComponent {
     const toType = this.sentenceService.charToType();
 
     if (event.key === 'Enter') {
-      if (toType === '\n') {
-        return this.sentenceService.currentPosition + 1;
-      } else {
-        return 0;
-      }
-
-      // this.sentenceService.handleNewLine(toType);
+      return this.sentenceService.handleNewLine(toType);
     }
 
     if (event.key === '.') {
-      // if (this.sentenceService.endOfSentence(toType)) {
-      //   this.sentenceService.postCompletedSentence();
-      //   this.sentenceService.goToNextSencente();
-      //   this.sentenceService.currentPosition = 0;
-      // }
-
       this.sentenceService.handleEndOfSentence(toType);
     }
 
-    return event.key == this.sentenceService.charToType()
-      ? this.sentenceService.currentPosition + 1
-      : 0;
+    if (event.key == this.sentenceService.charToType()) {
+      return this.sentenceService.currentPosition + 1;
+    } else {
+      return 0;
+    }
   }
 
   colorTypedTest(i: number) {
