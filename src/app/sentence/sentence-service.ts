@@ -20,9 +20,11 @@ export class SententService {
   }
 
   prepareTextToType(text: string): void {
-    // this.sentences = text.split('. ');
-    this.currentSentence = 0; // Test mode!
-    this.sentences = ['1\n1', '2', '3', '4'];
+    // Test mode
+    // this.currentSentence = 0;
+    // this.sentences = ['1\n1', '2', '3', '4'];
+
+    this.sentences = text.split('. ');
     this.charsToType = this.splitSentenceToType();
   }
 
@@ -30,11 +32,11 @@ export class SententService {
     return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 
-  handleNewLine(toType: string): number {
+  handleNewLine(toType: string) {
     if (toType === '\n') {
-      return this.currentPosition + 1;
+      this.currentPosition++;
     } else {
-      return 0;
+      this.currentPosition = 0;
     }
   }
 
@@ -48,7 +50,7 @@ export class SententService {
 
   handleEndOfSentence(toType: string | undefined) {
     if (this.endOfSentence(toType)) {
-      // this.postCompletedSentence();
+      this.postCompletedSentence();
       this.goToNextSencente();
       this.currentPosition = 0;
     }
@@ -78,24 +80,16 @@ export class SententService {
   }
 
   evaluatePressedKey(key: string) {
-    this.currentPosition = this.evaluateKeyPressed(key);
-  }
-
-  evaluateKeyPressed(key: string): number {
     const toType = this.charToType();
 
     if (key === 'Enter') {
-      return this.handleNewLine(toType);
-    }
-
-    if (key === '.') {
+      this.handleNewLine(toType);
+    } else if (key === '.') {
       this.handleEndOfSentence(toType);
-    }
-
-    if (key == this.charToType()) {
-      return this.currentPosition + 1;
+    } else if (key == this.charToType()) {
+      this.currentPosition++;
     } else {
-      return 0;
+      this.currentPosition = 0;
     }
   }
 }
