@@ -11,35 +11,12 @@ import { SententService } from './sentence/sentence-service';
 export class AppComponent {
   title = 'hackype';
 
-  pressedKey = '';
-
   constructor(public sentenceService: SententService) {}
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    this.pressedKey = event.key;
-
-    this.sentenceService.currentPosition = this.evaluateKeyPressed(event);
-
-    // console.warn(this.pressedKey);
-  }
-
-  evaluateKeyPressed(event: KeyboardEvent): number {
-    const toType = this.sentenceService.charToType();
-
-    if (event.key === 'Enter') {
-      return this.sentenceService.handleNewLine(toType);
-    }
-
-    if (event.key === '.') {
-      this.sentenceService.handleEndOfSentence(toType);
-    }
-
-    if (event.key == this.sentenceService.charToType()) {
-      return this.sentenceService.currentPosition + 1;
-    } else {
-      return 0;
-    }
+    let pressedKey = event.key;
+    this.sentenceService.evaluatePressedKey(pressedKey);
   }
 
   colorTypedTest(i: number) {

@@ -20,9 +20,9 @@ export class SententService {
   }
 
   prepareTextToType(text: string): void {
-    this.sentences = text.split('. ');
-    // this.currentSentence = 0; // Test mode!
-    // this.sentences = ['1\n1', '2', '3', '4'];
+    // this.sentences = text.split('. ');
+    this.currentSentence = 0; // Test mode!
+    this.sentences = ['1\n1', '2', '3', '4'];
     this.charsToType = this.splitSentenceToType();
   }
 
@@ -48,7 +48,7 @@ export class SententService {
 
   handleEndOfSentence(toType: string | undefined) {
     if (this.endOfSentence(toType)) {
-      this.postCompletedSentence();
+      // this.postCompletedSentence();
       this.goToNextSencente();
       this.currentPosition = 0;
     }
@@ -75,5 +75,27 @@ export class SententService {
     }
 
     this.charsToType = this.splitSentenceToType();
+  }
+
+  evaluatePressedKey(key: string) {
+    this.currentPosition = this.evaluateKeyPressed(key);
+  }
+
+  evaluateKeyPressed(key: string): number {
+    const toType = this.charToType();
+
+    if (key === 'Enter') {
+      return this.handleNewLine(toType);
+    }
+
+    if (key === '.') {
+      this.handleEndOfSentence(toType);
+    }
+
+    if (key == this.charToType()) {
+      return this.currentPosition + 1;
+    } else {
+      return 0;
+    }
   }
 }
