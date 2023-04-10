@@ -4,7 +4,7 @@ import { HttpService } from '../http/http-service';
 @Injectable({
   providedIn: 'root',
 })
-export class SententService {
+export class NormalProfile {
   charsToType: string[] = [];
   currentPosition = 0;
   sentences: string[] = [];
@@ -20,26 +20,8 @@ export class SententService {
   }
 
   prepareTextToType(text: string): void {
-    // Test mode
-    // this.currentSentence = 0;
-    // this.sentences = ['1.\n1', '2', '3', '4'];
-
     this.sentences = text.split('. ');
     this.charsToType = this.splitSentenceToType();
-  }
-
-  evaluatePressedKey(key: string) {
-    const toType = this.charToType();
-
-    if (key === 'Enter') {
-      this.handleNewLine(toType);
-    } else if (key === '.' && this.endOfSentence(toType)) {
-      this.handleEndOfSentence(toType);
-    } else if (key == this.charToType()) {
-      this.currentPosition++;
-    } else {
-      this.currentPosition = 0;
-    }
   }
 
   handleEndOfSentence(toType: string | undefined) {
@@ -54,32 +36,6 @@ export class SententService {
     this.httpService.completeSentence(id, sentence);
   }
 
-  splitSentenceToType(): string[] {
-    return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
-  }
-
-  handleNewLine(toType: string) {
-    if (toType === '\n') {
-      this.currentPosition++;
-    } else {
-      this.currentPosition = 0;
-    }
-  }
-
-  isNewLine(char: string): boolean {
-    return char === '\n';
-  }
-
-  charToType() {
-    return this.charsToType.at(this.currentPosition)!;
-  }
-
-  private endOfSentence(toType: string | undefined) {
-    return (
-      toType === '.' && this.charsToType.length === this.currentPosition + 1
-    );
-  }
-
   private goToNextSencente() {
     console.warn('Next sentence');
     this.currentSentence = this.currentSentence + 1;
@@ -89,5 +45,9 @@ export class SententService {
     }
 
     this.charsToType = this.splitSentenceToType();
+  }
+
+  splitSentenceToType(): string[] {
+    return this.sentences.at(this.currentSentence)?.concat('.')!.split('')!;
   }
 }
