@@ -21,8 +21,8 @@ export class AppComponent {
 
   colorTypedTest(i: number) {
     const basic = 'mt-6 text-center text-3xl font-bold tracking-tight ';
-    const untyped = basic + 'text-gray-900 ';
-    const typed = basic + 'text-yellow-400 bg-green-300';
+    const untyped = basic + 'text-gray-500 ';
+    const typed = basic + 'text-yellow-400';
     return this.sentenceService.currentPosition > i ? typed : untyped;
   }
 }
