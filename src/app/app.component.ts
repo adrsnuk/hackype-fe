@@ -21,8 +21,18 @@ export class AppComponent {
 
   colorTypedTest(i: number) {
     const basic = 'mt-6 text-center text-3xl font-bold tracking-tight ';
-    const untyped = basic + 'text-gray-500 ';
+    const untyped = basic + 'text-gray-700 ';
+    const next = basic + 'text-gray-700 underline decoration-yellow-400';
     const typed = basic + 'text-yellow-400';
-    return this.sentenceService.currentPosition > i ? typed : untyped;
+
+    const position = this.sentenceService.currentPosition;
+
+    if (position > i) {
+      return typed;
+    } else if (position == i) {
+      return next;
+    } else {
+      return untyped;
+    }
   }
 }
