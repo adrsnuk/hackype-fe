@@ -19,11 +19,17 @@ export class AppComponent {
     this.sentenceService.evaluatePressedKey(pressedKey);
   }
 
-  colorTypedTest(i: number) {
+  colorTypedTest(i: number, char: string) {
     const basic = 'mt-6 text-center text-3xl font-bold tracking-tight ';
     const untyped = basic + 'text-gray-700 ';
-    const next = basic + 'text-gray-700 underline decoration-yellow-400';
-    const typed = basic + 'text-yellow-400';
+    // const next = basic + 'text-gray-700 underline decoration-yellow-400';
+    const typed = basic + 'text-green-800';
+
+    let next = basic + 'text-yellow-400';
+
+    if (char.trim().length == 0) {
+      next = 'underline decoration-yellow-400';
+    }
 
     const position = this.sentenceService.currentPosition;
 

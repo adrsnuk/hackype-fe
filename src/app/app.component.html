@@ -4,8 +4,10 @@
       <ng-container
         *ngFor="let char of this.sentenceService.charsToType; let i = index"
       >
-        <div *ngIf="this.sentenceService.isNewLine(char)"></div>
-        <span [ngClass]="colorTypedTest(i)">{{ char }}</span>
+        <div *ngIf="this.sentenceService.isNewLine(char)">
+          <!-- <img src="assets/arrow-enter-svgrepo-com.svg" /> -->
+        </div>
+        <span [ngClass]="colorTypedTest(i, char)">{{ char }}</span>
       </ng-container>
     </h2>
   </div>
