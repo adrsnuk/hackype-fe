@@ -25,6 +25,12 @@ export class SententService {
     // this.sentences = ['1.\n1', '2', '3', '4'];
 
     this.sentences = text.split('. ');
+
+    // Recovery mode
+    // for (let i = 0; i < 55; i++) {
+    //   this.httpService.completeSentence(i + 1, this.sentences[i]);
+    // }
+
     this.charsToType = this.splitSentenceToType();
   }
 
@@ -38,7 +44,8 @@ export class SententService {
     } else if (key == this.charToType()) {
       this.currentPosition++;
     } else {
-      this.currentPosition = 0;
+      // Hardcore mode
+      // this.currentPosition = 0;
     }
   }
 
