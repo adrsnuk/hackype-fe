@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Intro } from '../domain/Intro';
 import { Round } from '../domain/Round.model';
 import { UserProgress } from '../domain/UserProgress.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HttpService {
+export class RoundHttpClient {
   textToTypeSubject: Subject<string> = new Subject();
 
   constructor(private http: HttpClient) {
@@ -17,11 +16,11 @@ export class HttpService {
 
   getCurrentRound() {
     this.http
-    .get<Round>('http://localhost:8080/current-round')
-    .subscribe((currentRound) => {
-      console.warn(currentRound.content);
-      this.textToTypeSubject.next(currentRound.content);
-    })
+      .get<Round>('http://localhost:8080/current-round')
+      .subscribe((currentRound) => {
+        console.warn(currentRound.content);
+        this.textToTypeSubject.next(currentRound.content);
+      })
   }
 
   completeRound() {

@@ -2,12 +2,12 @@
   <div>
     <h2>
       <ng-container
-        *ngFor="let char of this.sentenceService.charsToType; let i = index"
+        *ngFor="let char of this.roundService.charsToType; let i = index"
       >
-        <div *ngIf="this.sentenceService.isNewLine(char)">
+        <div *ngIf="this.roundService.isNewLine(char)">
           <!-- <img src="assets/arrow-enter-svgrepo-com.svg" /> -->
         </div>
-        <span [ngClass]="colorTypedTest(i, char)">{{ char }}</span>
+        <span (mouseenter)="dictionaryPopup(i)" [ngClass]="colorTypedTest(i, char)">{{ char }}</span>
       </ng-container>
     </h2>
   </div>
