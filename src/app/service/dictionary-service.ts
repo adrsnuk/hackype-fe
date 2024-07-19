@@ -13,6 +13,8 @@ export class DictionaryService {
     constructor(private roundHttpClient: RoundHttpClient) {
 
         roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
+            this.indexToWordMap.clear();
+
             let charsToType: string[] = roundContent.split('');
 
             let index: number = 0;
