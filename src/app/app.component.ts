@@ -43,6 +43,6 @@ export class AppComponent {
   }
 
   dictionaryPopup(i: number) {
-    this.dictionaryService.dictionaryPopup(i);
+    this.dictionaryService.hoveredWord(i);
   }
 }

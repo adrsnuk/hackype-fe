@@ -5,7 +5,7 @@
         <div *ngIf="this.roundService.isNewLine(char)">
           <!-- <img src="assets/arrow-enter-svgrepo-com.svg" /> -->
         </div>
-        <span appTooltip="{{ char }}" [ngClass]="colorTypedTest(i, char)">{{ char }}</span>
+        <span dictionaryTooltip="{{ i }}" [ngClass]="colorTypedTest(i, char)">{{ char }}</span>
       </ng-container>
     </h2>
   </div>

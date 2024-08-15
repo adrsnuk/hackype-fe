@@ -1,19 +1,21 @@
 import { Injectable } from "@angular/core";
 import { RoundService } from "./round-service";
 import { RoundHttpClient } from "../http/round-http-service";
+import { Subject } from "rxjs";
+import { TooltipDirective } from "../dictionary-tooltip/dictionary-tooltip.directive";
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class DictionaryService {
-    indexToWordMap: Map<number, string> = new Map<number, string>();
 
+    hoveredWordSubject: Subject<string> = new Subject();
+    indexToWordMap: Map<number, string> = new Map<number, string>();
 
     constructor(private roundHttpClient: RoundHttpClient) {
 
         roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
-            this.indexToWordMap.clear();
 
             let charsToType: string[] = roundContent.split('');
 
@@ -40,17 +42,18 @@ export class DictionaryService {
 
                 index++;
             }
+
             indexArray.forEach(passedIndex => {
                 this.indexToWordMap.set(passedIndex, word);
             })
+
+            console.log(this.indexToWordMap);
         });
 
     }
 
-    dictionaryPopup(index: number) {
-        if (this.indexToWordMap.has(index)) {
-            console.warn(this.indexToWordMap.get(index));
-        }
+    hoveredWord(index: number) {
+        return this.indexToWordMap.get(index);
     }
 
 }

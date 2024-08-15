@@ -1,18 +1,21 @@
 import { Directive, ElementRef, HostListener, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { DictionaryTooltipComponent } from './dictionary-tooltip.component';
+import { DictionaryService } from '../service/dictionary-service';
 
 @Directive({
-    selector: '[appTooltip]'
+    selector: '[dictionaryTooltip]'
 })
 export class TooltipDirective {
-    @Input('appTooltip') tooltipData: any;
+    @Input('dictionaryTooltip')
+    hoveredIndex!: string;
 
     private tooltipComponentRef: any;
 
     constructor(
         private elementRef: ElementRef,
         private viewContainerRef: ViewContainerRef,
-        private componentFactoryResolver: ComponentFactoryResolver
+        private componentFactoryResolver: ComponentFactoryResolver,
+        private dictionaryService: DictionaryService
     ) { }
 
     @HostListener('mouseenter')
@@ -28,7 +31,8 @@ export class TooltipDirective {
     private showTooltip() {
         const factory = this.componentFactoryResolver.resolveComponentFactory(DictionaryTooltipComponent);
         this.tooltipComponentRef = this.viewContainerRef.createComponent(factory);
-        this.tooltipComponentRef.instance.data = this.tooltipData;
+
+        this.tooltipComponentRef.instance.data = this.dictionaryService.hoveredWord(+this.hoveredIndex);
         this.tooltipComponentRef.instance.position = this.calculatePosition();
     }
 

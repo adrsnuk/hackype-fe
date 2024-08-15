@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { DictionaryTooltipComponent } from './dictionary-tooltip/dictionary-tooltip.component';
 import { AppComponent } from './app.component';
-import { TooltipDirective } from './dictionary-tooltip/tooltip.directive';
+import { TooltipDirective } from './dictionary-tooltip/dictionary-tooltip.directive';
 
 @NgModule({
   declarations: [
