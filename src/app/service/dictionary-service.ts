@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { RoundService } from "./round-service";
 import { RoundHttpClient } from "../http/round-http-service";
-import { Subject } from "rxjs";
+import { forkJoin, map, Observable, Subject } from "rxjs";
 import { TooltipDirective } from "../dictionary-tooltip/dictionary-tooltip.directive";
+import { DictionaryHttpClient } from "../http/dictionary-http-service";
 
 @Injectable({
     providedIn: 'root',
@@ -12,8 +13,12 @@ export class DictionaryService {
 
     hoveredWordSubject: Subject<string> = new Subject();
     indexToWordMap: Map<number, string> = new Map<number, string>();
+    wordSet: Set<string> = new Set<string>;
+    wordToDefinitionsMap: Map<string, string[]> = new Map<string, string[]>();
 
-    constructor(private roundHttpClient: RoundHttpClient) {
+    constructor(private roundHttpClient: RoundHttpClient,
+        private dictionaryHttpClient: DictionaryHttpClient
+    ) {
 
         roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
 
@@ -32,6 +37,7 @@ export class DictionaryService {
                         this.indexToWordMap.set(passedIndex, word);
                     })
 
+                    this.wordSet.add(word);
                     word = '';
                     indexArray = [];
 
@@ -48,12 +54,27 @@ export class DictionaryService {
             })
 
             console.log(this.indexToWordMap);
-        });
 
+            const words = Array.from(this.wordSet);
+            const requests: Observable<[string, string[]]>[] = words.map((word) =>
+                this.dictionaryHttpClient.define(word).pipe(
+                    map((definitions) => [word, definitions] as [string, string[]])
+                )
+            );
+
+            console.log(this.wordSet);
+            forkJoin(requests).subscribe((results) => {
+                results.forEach(([word, definitions]) => {
+                    this.wordToDefinitionsMap.set(word, definitions);
+                });
+                console.log("All words processed");
+            });
+        });
     }
 
     hoveredWord(index: number) {
-        return this.indexToWordMap.get(index);
+        console.warn(this.wordToDefinitionsMap);
+        return this.wordToDefinitionsMap.get(this.indexToWordMap.get(index)!)!.join("\n");
     }
 
 }
