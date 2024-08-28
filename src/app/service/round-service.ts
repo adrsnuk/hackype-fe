@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RoundHttpClient } from '../http/round-http-service';
+import { ProgressService } from './progress-service';
 
 @Injectable({
   providedIn: 'root',

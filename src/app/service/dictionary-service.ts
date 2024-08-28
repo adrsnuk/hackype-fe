@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
-import { RoundService } from "./round-service";
 import { RoundHttpClient } from "../http/round-http-service";
 import { forkJoin, map, Observable, Subject } from "rxjs";
-import { TooltipDirective } from "../dictionary-tooltip/dictionary-tooltip.directive";
 import { DictionaryHttpClient } from "../http/dictionary-http-service";
 
 @Injectable({
@@ -11,7 +9,6 @@ import { DictionaryHttpClient } from "../http/dictionary-http-service";
 
 export class DictionaryService {
 
-    hoveredWordSubject: Subject<string> = new Subject();
     indexToWordMap: Map<number, string> = new Map<number, string>();
     wordSet: Set<string> = new Set<string>;
     wordToDefinitionsMap: Map<string, string[]> = new Map<string, string[]>();
