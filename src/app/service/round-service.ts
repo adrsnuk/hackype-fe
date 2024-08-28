@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http/http-service';
+import { RoundHttpClient } from '../http/round-http-service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SententService {
+export class RoundService {
   charsToType: string[] = [];
   currentPosition = 0;
 
-  constructor(private httpService: HttpService) {
-    httpService.textToTypeSubject.subscribe((roundContent: string) => {
-      this.charsToType = roundContent.split(''); 
+  constructor(private roundHttpClient: RoundHttpClient) {
+    roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
+      this.charsToType = roundContent.split('');
       this.currentPosition = 0;
     }
-  );
-}
+    );
+  }
 
   evaluatePressedKey(key: string) {
     const toType = this.charsToType.at(this.currentPosition)!;
@@ -25,11 +25,11 @@ export class SententService {
       this.handleEndOfSentence();
     } else if (key == toType) {
       this.currentPosition++;
-    } 
+    }
   }
 
   handleEndOfSentence() {
-    this.httpService.completeRound()
+    this.roundHttpClient.completeRound()
   }
 
   handleNewLine(toType: string) {

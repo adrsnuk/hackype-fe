@@ -1,7 +1,6 @@
 import { Component, HostListener, Injectable, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpService } from './http/http-service';
-import { SententService } from './sentence/sentence-service';
+import { RoundService } from './service/round-service';
+import { DictionaryService } from './service/dictionary-service';
 
 @Component({
   selector: 'app-root',
@@ -11,18 +10,19 @@ import { SententService } from './sentence/sentence-service';
 export class AppComponent {
   title = 'hackype';
 
-  constructor(public sentenceService: SententService) {}
+  constructor(
+    public roundService: RoundService,
+    public dictionaryService: DictionaryService) { }
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     let pressedKey = event.key;
-    this.sentenceService.evaluatePressedKey(pressedKey);
+    this.roundService.evaluatePressedKey(pressedKey);
   }
 
   colorTypedTest(i: number, char: string) {
     const basic = 'mt-6 text-center text-3xl font-bold tracking-tight ';
     const untyped = basic + 'text-gray-700 ';
-    // const next = basic + 'text-gray-700 underline decoration-yellow-400';
     const typed = basic + 'text-green-800';
 
     let next = basic + 'text-yellow-400';
@@ -31,7 +31,7 @@ export class AppComponent {
       next = 'underline decoration-yellow-400';
     }
 
-    const position = this.sentenceService.currentPosition;
+    const position = this.roundService.currentPosition;
 
     if (position > i) {
       return typed;
@@ -40,5 +40,9 @@ export class AppComponent {
     } else {
       return untyped;
     }
+  }
+
+  dictionaryPopup(i: number) {
+    this.dictionaryService.hoveredWord(i);
   }
 }
