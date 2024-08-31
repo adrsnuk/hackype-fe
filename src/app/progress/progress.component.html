@@ -1,0 +1,14 @@
+<div class="relative group">
+    <!-- Percentage Display -->
+    <div class="fixed bottom-4 right-4 p-2 bg-gray-600 text-white text-lg font-bold rounded-full">
+        {{ progressData.percentCompleted }}%
+    </div>
+
+    <!-- Hover Details -->
+    <div
+        class="fixed bottom-4 right-4 p-4 bg-white text-gray-800 shadow-lg rounded-lg hidden group-hover:block transition-all duration-300 ease-in-out">
+        <p>Current Round: <span class="font-bold">{{ progressData.currentRound }}</span> / {{ progressData.totalRounds
+            }}</p>
+        <p>Progress: <span class="font-bold">{{ progressData.percentCompleted }}%</span></p>
+    </div>
+</div>
