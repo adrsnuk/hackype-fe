@@ -20,8 +20,6 @@ export class RoundService {
   evaluatePressedKey(key: string) {
     const toType = this.charsToType.at(this.currentPosition)!;
 
-    console.warn(key);
-
     if (key === 'Enter') {
       this.handleNewLine(toType);
     } else if (key === '.' && this.isEndOfSentence(toType)) {
