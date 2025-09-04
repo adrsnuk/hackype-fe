@@ -12,6 +12,7 @@ export class ProgressComponent implements OnInit {
         totalRounds: 0,
         percentCompleted: 0
     };
+    hackypeBeUrl: String = "https://hackype-be-production.up.railway.app";
 
     constructor(private http: HttpClient) {
 
@@ -22,7 +23,7 @@ export class ProgressComponent implements OnInit {
     }
 
     fetchProgress(): void {
-        this.http.get<any>('http://localhost:8080/status')
+        this.http.get<any>(this.hackypeBeUrl + '/status')
             .subscribe(data => {
                 this.progressData = data;
             }, error => {
