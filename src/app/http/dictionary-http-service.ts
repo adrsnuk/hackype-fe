@@ -6,11 +6,12 @@ import { catchError, Observable } from "rxjs";
     providedIn: 'root',
 })
 export class DictionaryHttpClient {
+    dictionaryUrl: String = "https://dictionary-production-2b41.up.railway.app";
 
     constructor(private http: HttpClient) { }
 
     define(wordToDefine: string): Observable<string[]> {
-        return this.http.get<string[]>('http://localhost:8081/define/' + wordToDefine).pipe(
+        return this.http.get<string[]>(this.dictionaryUrl + '/define/' + wordToDefine).pipe(
             catchError(() => {
                 console.error(`Failed to fetch definitions for ${wordToDefine}`);
                 return [[]]; // Return an empty array on error
