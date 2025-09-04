@@ -12,7 +12,7 @@ export class ProgressComponent implements OnInit {
         totalRounds: 0,
         percentCompleted: 0
     };
-    hackypeBeUrl: String = "https://hackype-be-production.up.railway.app";
+    hackypeBeUrl: String = "http://localhost:8080";
 
     constructor(private http: HttpClient) {
 

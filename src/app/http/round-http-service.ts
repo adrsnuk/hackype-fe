@@ -9,7 +9,7 @@ import { UserProgress } from '../domain/UserProgress.model';
 })
 export class RoundHttpClient {
   textToTypeSubject: Subject<string> = new Subject();
-  hackypeBeUrl: String = "https://hackype-be-production.up.railway.app";
+  hackypeBeUrl: String = "http://localhost:8080";
 
   constructor(private http: HttpClient) {
     this.getCurrentRound();

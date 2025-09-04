@@ -6,7 +6,7 @@ import { catchError, Observable } from "rxjs";
     providedIn: 'root',
 })
 export class DictionaryHttpClient {
-    dictionaryUrl: String = "https://dictionary-production-2b41.up.railway.app";
+    dictionaryUrl: String = "http://localhost:8081";
 
     constructor(private http: HttpClient) { }
 
