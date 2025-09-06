@@ -8,7 +8,7 @@ import { UserProgress } from '../domain/UserProgress.model';
   providedIn: 'root',
 })
 export class RoundHttpClient {
-  textToTypeSubject: Subject<string> = new Subject();
+  textToTypeSubject: Subject<Round> = new Subject();
   hackypeBeUrl: String = "http://localhost:8080";
 
   constructor(private http: HttpClient) {
@@ -19,8 +19,8 @@ export class RoundHttpClient {
     this.http
       .get<Round>(this.hackypeBeUrl + '/current-round')
       .subscribe((currentRound) => {
-        console.warn(currentRound.content);
-        this.textToTypeSubject.next(currentRound.content);
+        console.warn(currentRound);
+        this.textToTypeSubject.next(currentRound);
       })
   }
 
