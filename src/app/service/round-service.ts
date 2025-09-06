@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RoundHttpClient } from '../http/round-http-service';
 import { ProgressService } from './progress-service';
+import { Round } from '../domain/Round.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,8 @@ export class RoundService {
   currentPosition = 0;
 
   constructor(private roundHttpClient: RoundHttpClient) {
-    roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
-      this.charsToType = roundContent.split('');
+    roundHttpClient.textToTypeSubject.subscribe((roundContent: Round) => {
+      this.charsToType = roundContent.content.split('');
       this.currentPosition = 0;
     }
     );

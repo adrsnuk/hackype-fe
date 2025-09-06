@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { RoundHttpClient } from "../http/round-http-service";
-import { forkJoin, map, Observable, Subject } from "rxjs";
-import { DictionaryHttpClient } from "../http/dictionary-http-service";
+import { Round } from "../domain/Round.model";
+import { WordDefinition } from "../domain/WordDefinition.model";
 
 @Injectable({
     providedIn: 'root',
@@ -13,13 +13,11 @@ export class DictionaryService {
     wordSet: Set<string> = new Set<string>;
     wordToDefinitionsMap: Map<string, string[]> = new Map<string, string[]>();
 
-    constructor(private roundHttpClient: RoundHttpClient,
-        private dictionaryHttpClient: DictionaryHttpClient
-    ) {
+    constructor(private roundHttpClient: RoundHttpClient) {
 
-        roundHttpClient.textToTypeSubject.subscribe((roundContent: string) => {
+        roundHttpClient.textToTypeSubject.subscribe((round: Round) => {
 
-            let charsToType: string[] = roundContent.split('');
+            let charsToType: string[] = round.content.split('');
 
             let index: number = 0;
             let word: string = '';
@@ -40,7 +38,7 @@ export class DictionaryService {
 
                 } else {
                     indexArray.push(index);
-                    word = word.concat(currentChar!);
+                    word = word.concat(currentChar!.toLocaleLowerCase());
                 }
 
                 index++;
@@ -51,21 +49,12 @@ export class DictionaryService {
             })
 
             console.log(this.indexToWordMap);
-
-            const words = Array.from(this.wordSet);
-            const requests: Observable<[string, string[]]>[] = words.map((word) =>
-                this.dictionaryHttpClient.define(word).pipe(
-                    map((definitions) => [word, definitions] as [string, string[]])
-                )
-            );
-
             console.log(this.wordSet);
-            forkJoin(requests).subscribe((results) => {
-                results.forEach(([word, definitions]) => {
-                    this.wordToDefinitionsMap.set(word, definitions);
-                });
-                console.log("All words processed");
-            });
+
+            round.definitions.forEach((workDefinition: WordDefinition) => {
+                this.wordToDefinitionsMap.set(workDefinition.word, workDefinition.definitions);
+            })
+
         });
     }
 
